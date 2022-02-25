@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--This is how you comment for html-->
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+    <title> Wood St </title>
+    <!--This where you put all your dependencies-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY2xhbmN5d2lsbW90dCIsImEiOiJjandmY3Ryc2MxaThkNDBtZ2dmcG9zOWJzIn0.wLqA-pIsMZcIl5uUgb49-Q'; // Add your access token here
+      // Below, we set up a 'map' variable which is a new map, with a standard style
+//variables (var) up the top
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'mapbox://styles/clancywilmott/ckv2wtm1l0t6a15pdwjngxol4', // stylesheet location
+  zoom: 12 // starting zoom
+});
+var geolocate = new mapboxgl.GeolocateControl({
+  positionOptions: {
+    enableHighAccuracy: true
+  },
+  trackUserLocation: true
+});
+// map.on(functions) at the bottom!
+map.addControl(geolocate);
+map.on('load', function() {
+  geolocate.trigger();
+  map.addSource('parcel', {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/cwilmott/Wood-St/main/Wood-St-Parcel.geojson'
+      });
+  map.addSource('grid', {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/cwilmott/Wood-St/main/Grid_Wood_St_Parcel.geojson'
+          });
+    map.addLayer({
+  id: 'parcel-layer',
+  type: 'line',
+  source: 'parcel',
+  paint: {'line-color': 'rgba(255, 255, 0, 1)',
+      'line-width': 4 }
+});
+map.addLayer({
+id: 'grid-layer',
+type: 'line',
+source: 'grid',
+paint: {'line-color': 'rgba(255, 20, 147, 1)',
+  'line-width': 3 }
+});
+
+});
+
+  </script>
+  </body>
+</html>
